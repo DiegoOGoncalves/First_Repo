@@ -1,0 +1,29 @@
+version: "3.7"
+
+networks:
+  pet-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 192.168.100.1/24
+
+services:
+  pet-shop:
+    container_name: pet-shop
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: .
+    image: pet-shop
+    restart: always
+    ports:
+      - "8080:80"
+    networks:
+      pet-network:
+        ipv4_address: 192.168.100.2
+    volumes:
+      - ./:/var/www/petshop
+    tty: true
+
+volumes:
+  pet-shop:
